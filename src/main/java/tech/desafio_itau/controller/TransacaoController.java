@@ -9,10 +9,12 @@ import tech.desafio_itau.service.TransacaoService;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RestController
-@RequestMapping(value = "/transacao",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/transacao")
 public class TransacaoController {
     OffsetDateTime dataHoraAtual=OffsetDateTime.now();
     private final TransacaoService transacaoService;
@@ -27,9 +29,20 @@ public class TransacaoController {
             if(transacao.getValor().compareTo(BigDecimal.ZERO)<0 || transacao.getDataHora().isAfter(dataHoraAtual))
                 return ResponseEntity.unprocessableEntity().body("transação não aceita");
         }catch (Exception e){
-            return ResponseEntity.badRequest().body("das");
+            return ResponseEntity.badRequest().build();
         }
         transacaoService.adicionar(transacao);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+    @DeleteMapping()
+    public ResponseEntity<String> deletar(){
+        transacaoService.deletar();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+    @GetMapping
+    public ResponseEntity<List<Transacao>> retornar(){
+        List<Transacao> transacoes= transacaoService.getTransacoes();
+        return ResponseEntity.ok().body(transacoes);
+    }
+
 }

@@ -13,6 +13,9 @@ public class TransacaoService {
     public void adicionar(Transacao transacao){
         transacoes.add(transacao);
     }
+    public void deletar(){
+        transacoes.clear();
+    }
 
     public List<Transacao> getTransacoes(){
         return transacoes;
